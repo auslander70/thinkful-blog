@@ -32,7 +32,14 @@ def entries(page=1):
                           page=page,
                           total_pages=total_pages
   )
-
+@app.route("/entry/<int:id>")
+def entry(id=1):
+  entry = session.query(Entry)
+  entry = entry.filter(Entry.id==id)
+  return render_template("entries.html",
+                          entries=entry
+  )
+  
 @app.route("/entry/add", methods=["GET"])
 def add_entry_get():
   return render_template("add_entry.html")
