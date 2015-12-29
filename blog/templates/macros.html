@@ -5,11 +5,12 @@
       <li>
         {{ entry.datetime | dateformat("%d/%m/%y") }}
       </li>
-      {% if entry.id > 0 %}
       <li>
         <a href="{{ url_for('edit_get', id=entry.id) }}">Edit</a>
       </li>
-      {% endif %}
+      <li>
+        <a href="{{ url_for('del_entry_confirm', id=entry.id) }}">Delete</a>
+      </li>
     </ul>
   </div>
   <div class="col-md-10">
@@ -20,3 +21,4 @@
   </div>
 </div>
 {% endmacro %}
+

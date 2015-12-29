@@ -35,22 +35,31 @@ def entries(page=1):
 
 @app.route("/entry/<int:id>")
 def entry(id=1):
+  count = session.query(Entry).count()
   entry = session.query(Entry).get(id)
-  return render_template("entries.html",
-                          entries=entry
+  has_next = id < count 
+  has_prev = id > 1
+  return render_template("entry.html",
+                          entry=entry,
+                          has_next=has_next,
+                          has_prev=has_prev,
+                          id=id
   )
 
 @app.route("/entry/<int:id>/edit", methods=["GET"])
 def edit_get(id):
-  id = 26
   entry = session.query(Entry).get(id)
   return render_template("edit_entry.html",
                           entry=entry
   )
 
 @app.route("/entry/<int:id>/edit", methods=["POST"])
-def edit_post():
-  pass
+def edit_post(id):
+  entry = session.query(Entry).get(id)
+  entry.title=request.form["title"],
+  entry.content=request.form["content"],
+  session.commit()
+  return redirect(url_for("entry", id=id))
   
 @app.route("/entry/add", methods=["GET"])
 def add_entry_get():
@@ -65,5 +74,18 @@ def add_entry_post():
   session.add(entry)
   session.commit()
   return redirect(url_for("entries"))
-  
-  
+
+@app.route("/entry/<int:id>/delete", methods=["GET"])
+def del_entry_confirm(id):
+  entry = session.query(Entry).get(id)
+  return render_template("delete.html",
+                          id=id,
+                          entry=entry)
+
+@app.route("/entry/<int:id>/delete", methods=["POST"])
+def check_delete_response(id):
+  if request.form["delete"] == "yes":
+    entry=session.query(Entry).get(id)
+    session.delete(entry)
+    session.commit
+  return redirect(url_for("entries"))
