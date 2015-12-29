@@ -32,3 +32,6 @@ def entries(page=1):
                           total_pages=total_pages
   )
 
+@app.route("/entry/add", methods=["GET"])
+def add_entry_get():
+  return render_template("add_entry.html")
