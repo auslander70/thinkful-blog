@@ -32,13 +32,25 @@ def entries(page=1):
                           page=page,
                           total_pages=total_pages
   )
+
 @app.route("/entry/<int:id>")
 def entry(id=1):
-  entry = session.query(Entry)
-  entry = entry.filter(Entry.id==id)
+  entry = session.query(Entry).get(id)
   return render_template("entries.html",
                           entries=entry
   )
+
+@app.route("/entry/<int:id>/edit", methods=["GET"])
+def edit_get(id):
+  id = 26
+  entry = session.query(Entry).get(id)
+  return render_template("edit_entry.html",
+                          entry=entry
+  )
+
+@app.route("/entry/<int:id>/edit", methods=["POST"])
+def edit_post():
+  pass
   
 @app.route("/entry/add", methods=["GET"])
 def add_entry_get():

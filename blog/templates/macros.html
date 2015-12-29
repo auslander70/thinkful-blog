@@ -5,6 +5,11 @@
       <li>
         {{ entry.datetime | dateformat("%d/%m/%y") }}
       </li>
+      {% if entry.id > 0 %}
+      <li>
+        <a href="{{ url_for('edit_get', id=entry.id) }}">Edit</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
   <div class="col-md-10">
