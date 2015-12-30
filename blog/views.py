@@ -12,12 +12,17 @@ def entries(page=1):
   # Zero-indexed page
   page_index = page - 1
   
+  if request.args.get('limit'):
+    paginate_by = int(request.args.get('limit'))
+  else:
+    paginate_by = PAGINATE_BY
+    
   count = session.query(Entry).count()
   
-  start = page_index * PAGINATE_BY
-  end = start + PAGINATE_BY
+  start = page_index * paginate_by
+  end = start + paginate_by
   
-  total_pages = (count - 1) / PAGINATE_BY + 1
+  total_pages = (count - 1) / paginate_by + 1
   has_next = page_index < total_pages - 1
   has_prev = page_index > 0
   
