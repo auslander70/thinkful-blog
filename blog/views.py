@@ -4,6 +4,7 @@ from flask import request, redirect, url_for
 
 from blog import app
 from .database import session, Entry, User
+from flask.ext.login import login_required
 from flask.ext.login import login_user
 from werkzeug.security import check_password_hash
 
@@ -55,6 +56,7 @@ def entry(id=1):
   )
 
 @app.route("/entry/<int:id>/edit", methods=["GET"])
+@login_required
 def edit_get(id):
   entry = session.query(Entry).get(id)
   return render_template("edit_entry.html",
@@ -62,6 +64,7 @@ def edit_get(id):
   )
 
 @app.route("/entry/<int:id>/edit", methods=["POST"])
+@login_required
 def edit_post(id):
   entry = session.query(Entry).get(id)
   entry.title=request.form["title"],
@@ -70,10 +73,12 @@ def edit_post(id):
   return redirect(url_for("entry", id=id))
   
 @app.route("/entry/add", methods=["GET"])
+@login_required
 def add_entry_get():
   return render_template("add_entry.html")
   
 @app.route("/entry/add", methods=["POST"])
+@login_required
 def add_entry_post():
   entry = Entry(
     title=request.form["title"],
@@ -84,6 +89,7 @@ def add_entry_post():
   return redirect(url_for("entries"))
 
 @app.route("/entry/<int:id>/delete", methods=["GET"])
+@login_required
 def del_entry_confirm(id):
   entry = session.query(Entry).get(id)
   return render_template("delete.html",
@@ -91,6 +97,7 @@ def del_entry_confirm(id):
                           entry=entry)
 
 @app.route("/entry/<int:id>/delete", methods=["POST"])
+@login_required
 def check_delete_response(id):
   if request.form["delete"] == "yes":
     entry=session.query(Entry).get(id)
