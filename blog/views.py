@@ -7,8 +7,6 @@ from .database import session, Entry, User
 from flask.ext.login import login_user
 from werkzeug.security import check_password_hash
 
-import pdb
-
 PAGINATE_BY = 10
 
 @app.route("/")
@@ -113,8 +111,6 @@ def login_post():
     flash("Incorrect username or password", "danger")
     return redirect(url_for("login_get"))
     
-  pdb.set_trace()
-  
   login_user(user)
   return redirect(request.args.get('next') or url_for("entries"))
   
