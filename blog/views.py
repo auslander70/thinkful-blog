@@ -4,6 +4,7 @@ from flask import request, redirect, url_for
 
 from blog import app
 from .database import session, Entry, User
+from flask.ext.login import current_user
 from flask.ext.login import login_required
 from flask.ext.login import login_user
 from werkzeug.security import check_password_hash
@@ -83,6 +84,7 @@ def add_entry_post():
   entry = Entry(
     title=request.form["title"],
     content=request.form["content"],
+    author=current_user
   )
   session.add(entry)
   session.commit()
