@@ -1,8 +1,11 @@
 import os
-from flask.ext.script import Manager
 
 from blog import app
-from blog.database import session, Entry
+from blog.database import User, session, Entry
+from flask.ext.script import Manager
+from getpass import getpass
+from werkzeug.security import generate_password_hash
+
 
 manager = Manager(app)
 
